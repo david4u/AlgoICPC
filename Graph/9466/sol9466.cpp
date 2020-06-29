@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -13,10 +14,11 @@ void DFS(int x) {
 	visit[x] = true;
 
 	int next = pointOf[x];
+
 	if (visit[next] == false) {
 		DFS(next);
 	} else if (finish[next] == false) {
-		for (int i = next; i != x; i++) {
+		for (int i = next; i != x; i = pointOf[i]) {
 			count++;
 		}
 		count++;
@@ -28,6 +30,9 @@ int main() {
 	cin >> K;
 	while(K--) {
 		cin >> N;
+		count = 0;
+		memset(visit, false, sizeof(visit));
+		memset(finish, false, sizeof(finish));
 		for (int i = 1 ; i <= N; i++) {
 			cin >> pointOf[i];
 		}
@@ -36,13 +41,7 @@ int main() {
 				DFS(i);
 			}
 		}
-        for (int i = 1; i <= N; i++) {
-			visit[i] = false;
-			pointOf[i] = 0;
-			finish[i] = false;
-		}
 		cout << N - count << '\n';
-        count = 0;
 	}
 	return 0;
 }
