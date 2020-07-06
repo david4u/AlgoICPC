@@ -1,61 +1,50 @@
 #include <iostream>
-#include <vector>
+#include <cstring>
 
 using namespace std;
 
-int T;
-int N;
-int P[1001];
-bool check[1001];
-int ans[1000000];
-vector<int> tests[1000000];
+int T, N;
+int arr[1001];
+bool visit[1001];
+int answer = 0;
+bool more;
 
-int solProblem() {
-    bool more = true;
-    int count = 0;
-    int cur = 1;
-    int next;
-	
-    while (more) {
-        check[cur] = true;
-        next = P[cur];
-        while(next != cur) {
-            check[next] = true;
-            next = P[next];
-        }
-		count++;
-        more = false;
-        for (int k = 1; k <= N; k++) {
-        	if (check[k] == false) {
-            	cur = k;
-            	more = true;
-            	break;
-        	}
-    	}
+void BFS(int x) {
+    int cur = x;
+    int next = arr[x];
+    if (visit[next] != true) {
+        visit[next] = true;
+        BFS(next);
+    } else {
+        answer++;
     }
-    return count;
 }
 
 int main() {
     cin >> T;
-    for (int i = 0; i < T; i++) {
-        cin >> tests[i][0];
-        for ( int j = 1; j <= tests[i][0]; j++) {
-            cin >> tests[i][j];
+    while (T--) {
+        cin >> N;
+        memset(arr, 0, sizeof(arr));
+        memset(visit, false, sizeof(visit));
+        answer = 0;
+        for (int i = 1; i <= N; i++) {
+            cin >> arr[i];
         }
-    }
-    for (int i = 0; i < T; i++) {
-        N = tests[i][0];
-        for (int j = 1; j <= N; j++) {
-            P[j] = tests[i][j];
+        more = true;
+        int key;
+        while(more) {
+            more = false;
+            for (int i = 1; i<= N; i++) {
+                if (visit[i] == false) {
+                    key = i;
+                    more = true;
+                    i = N;
+                }
+            }
+            BFS(key);
         }
-        for (int j = 1; j <= N; j++) {
-            check[j] = false;
-        }
-        ans[i] = solProblem();
-    }
-    for (int i = 0; i< T; i++) {
-        cout << ans[i];
+        cout << --answer << '\n';
+
     }
     return 0;
 }
