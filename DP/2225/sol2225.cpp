@@ -15,7 +15,6 @@ long long fillBino(int n, int r) {
     return ret;
 }
 
-
 int main() {
     cin >> N;
     cin >> K;
