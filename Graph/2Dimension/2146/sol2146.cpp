@@ -5,8 +5,8 @@
 
 using namespace std;
 
-int map[101][101];
-bool visited[101][101];
+int map[100][100];
+bool visited[100][100];
 int N;
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
@@ -17,8 +17,8 @@ int min(int x, int y) {
 
 int BFS(int x) {
     queue<pair<int, int>> q;
-    for (int i = 1 ; i<= N; i++) {
-        for (int j = 1; j <= N; j++) {
+    for (int i = 0 ; i< N; i++) {
+        for (int j = 0; j < N; j++) {
             if(map[i][j] == x) {
                 visited[i][j] = true;
                 q.push({j, i});
@@ -36,7 +36,7 @@ int BFS(int x) {
             for (int j = 0 ; j <4; j++) {
                 int ny = cy + dy[j];
                 int nx = cx + dx[j];
-                if ( 1 <= nx && nx <= N && 1 <= ny && ny <= N) {
+                if ( 0 <= nx && nx < N && 0 <= ny && ny < N) {
                     if (map[ny][nx] != 0 && map[ny][nx] != x) {
                         return result;
                     }
@@ -53,8 +53,8 @@ int BFS(int x) {
 
 int main() {
 	cin >> N;
-	for (int i = 1; i <= N; i++) {
-		for (int j = 1; j <= N; j++) {
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
 			cin >> map[i][j];
 		}
 	}
@@ -62,9 +62,8 @@ int main() {
 	int count = 0;
 	bool more = false;
 	queue<pair<int, int>> q;
-	queue<pair<int, int>> edge;
-	for (int i = 1;i <= N; i++) {
-		for (int j = 1; j <= N; j++) {
+	for (int i = 0;i < N; i++) {
+		for (int j = 0; j < N; j++) {
 			if (map[i][j] == 1) {
 				q.push({j, i});
 				i = j = N + 1;
@@ -84,16 +83,13 @@ int main() {
 			for (int i = 0; i < 4; i++) {
 				int nx = cx + dx[i];
 				int ny = cy + dy[i];
-				if ( 1<= nx && nx <= N && 1 <= ny && ny <= N && !visited[ny][nx] && map[ny][nx] == 1) {
+				if ( 0 <= nx && nx < N && 0 <= ny && ny < N && !visited[ny][nx] && map[ny][nx] == 1) {
 					q.push({nx, ny});
-				}
-				if ( 1<= nx && nx <= N && 1 <= ny && ny <= N && !visited[ny][nx] && map[ny][nx] == 0) {
-					edge.push({cx, cy});
 				}
 			}
 		}
-		for (int i = 1;i <= N; i++) {
-			for (int j = 1; j <= N; j++) {
+		for (int i = 0;i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				if (map[i][j] == 1 && !visited[i][j]) {
 					q.push({j, i});
 					i = j = N + 1;
@@ -102,7 +98,7 @@ int main() {
 			}
 		}
 	}
-	int answer = 10000;
+	int answer = 1000;
     for (int i = 1; i <= count; i++) {
         memset(visited, false, sizeof(visited));
         answer = min(answer, BFS(i));
