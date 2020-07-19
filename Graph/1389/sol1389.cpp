@@ -5,46 +5,55 @@
 
 using namespace std;
 
-int N, M;
-vector<int> adjlist[101];
-int visitN[101];
-int user[101];
+int map[101][101];
+int N;
+int r;
+int mini = 9999999;
+int ans = -1;
 
-int main() {
-	cin >> N >> M;
-	for (int i = 1;i <= M; i++) {
-		int from, to;
-		cin >> from >> to;
-		adjlist[from].push_back(to);
-		adjlist[to].push_back(from);
-	}
-	for (int i = 1; i<= N; i++) {
-		queue<int> q;
-		q.push(i);
-		int cnt = 0;
-		memset(visitN, -1, sizeof(visitN));
-		visitN[i] = 0;
-		int sum = 0;
-		while(!q.empty()) {
-			int cur = q.front();
-			q.pop();
-			cnt++;
-			vector<int> cv = adjlist[cur];
-			for (int j = 0; j < cv.size(); j++) {
-				if (visitN[cv[j]] == -1) {
-					visitN[cv[j]] = cnt;
-					sum += cnt;
-					q.push(cv[j]);
-				}
+queue<int> q;
+int visited[101];
+
+void BFS(int x) {
+	visited[x] = 1;
+	q.push(x);
+
+	while(!q.empty()) {
+		x = q.front();
+		q.pop();
+		for (int i = 1; i <= N; i++) {
+			if (map[x][i] == 1 && visited[i] == 0) {
+				visited[i] = visited[x] + 1;
+				q.push(i);
 			}
 		}
-		user[i] = sum;
 	}
-	int answer = 1;
+}
+
+int main() {
+	cin >> N >> r;
+	for (int i = 1;i <= r; i++) {
+		int from, to;
+		cin >> from >> to;
+		map[from][to] = 1;
+		map[to][from] = 1;
+	}
 	for (int i = 1; i <= N; i++) {
-		if (user[answer] > user[i]) {
-			answer = i;
+		memset(visited, 0, sizeof(visited));
+		BFS(i);
+		int sum = 0;
+		for (int k = 1; k <= N; k++) {
+			if (i == k) {
+				continue;
+			}
+			else {
+				sum += (visited[k]-1);
+			}
+		}
+		if (sum < mini) {
+			mini = sum;
+			ans = i;
 		}
 	}
-	cout << answer << '\n';
+	cout << ans << '\n';
 }
