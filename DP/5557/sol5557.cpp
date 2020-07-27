@@ -1,53 +1,30 @@
 #include <iostream>
 #include <cstring>
-#include <vector>
-#include <algorithm>
-
 using namespace std;
+
+using ll = long long;
 
 int N;
 int arr[101];
-int goal;
-long long answer = 0;
-vector<long long> v;
+ll dp[101][21];
+// i 번째 까지 실행했을 때 값이 j인 경우의 수 -> d[i][j]
+// N-1번째 까지 실행했을 때 값이 arr[N]인 경우의 수가 answer;
+ll answer = 0;
 
-void find(vector<long long> v1, int idx) {
-	if (idx == N-1) {
-		int size = v1.size();
-		for (int i = 0 ; i < size; i++) {
-			if (v1[i] - arr[idx] == goal) {
-				answer++;
-			}
-			if (v1[i] + arr[idx] == goal) {
-				answer++;
-			}
-		}
-		return;		
+void setdp(int idx) {
+	if (idx == N) {
+		return;
 	}
-	int size = v1.size();
-	vector<long long> v2;
-	for (int i = 0; i < size; i++) {
-		int cur = v1.back();
-		int n, p;
-		n = cur - arr[idx];
-		p = cur + arr[idx];
-		v1.pop_back();
-		if( 0 <= n && p <= 20) {
-			v2.push_back(n);
-			v2.push_back(p);
-		}
-		n = cur - arr[idx];
-		p = cur + arr[idx];
-		if (n < 0 && 0 <= p && p <= 20) {
-			v2.push_back(p);
-		}
-		if (p > 20 && 0 <= n && n <= 20) {
-			v2.push_back(n);
+	for (int i = 0; i <= 20; i++) {
+		if(dp[idx-1][i] != 0) {
+			if(i + arr[idx] <= 20) {
+				dp[idx][i + arr[idx]] += dp[idx-1][i];
+			}
+			if (i-arr[idx] >= 0) {
+				dp[idx][i - arr[idx]] += dp[idx-1][i];
+			}
 		}
 	}
-	unique(v2.begin(), v2.end());
-	find(v2, idx + 1);
-	return;
 }
 
 int main() {
@@ -55,8 +32,11 @@ int main() {
 	for (int i = 1; i <= N; i++) {
 		cin >> arr[i];
 	}
-	v.push_back(arr[1]);
-	goal = arr[N];
-	find(v, 2);
-	cout << answer<< '\n';
+	memset(dp, 0, sizeof(dp));
+	dp[1][arr[1]] = 1;
+	for (int i = 2; i <= N; i++) {
+		setdp(i);
+	}
+	answer = dp[N-1][arr[N]];
+	cout << answer << '\n';
 }
