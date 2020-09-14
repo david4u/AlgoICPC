@@ -98,10 +98,17 @@ int main() {
 			}
 		}
 	}
-	int answer = 1000;
-    for (int i = 1; i <= count; i++) {
-        memset(visited, false, sizeof(visited));
-        answer = min(answer, BFS(i));
-    }
-	cout << answer << '\n';
+
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= N; j++) {
+			cout << map[i][j] << " ";
+		}
+		cout << '\n';
+	}
+	// int answer = 1000;
+    // for (int i = 1; i <= count; i++) {
+    //     memset(visited, false, sizeof(visited));
+    //     answer = min(answer, BFS(i));
+    // }
+	// cout << answer << '\n';
 }
