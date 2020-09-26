@@ -19,12 +19,12 @@ int max(int x, int y) {
 bool check[maxN];
 
 void floyd() {
-	for (int i = 0; i < n ; i++) {
+	for (int i = 1; i <= n ; i++) {
 		adj[i][i] = 0;
 	}
-	for (int k = 0; k < n; k++) {
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n ;j++) {
+	for (int k = 1; k <= n; k++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n ;j++) {
 				adj[i][j] = min(adj[i][j], adj[i][k] + adj[k][j]);
 			}
 		}
@@ -46,8 +46,8 @@ int main() {
 		for (int i = 0; i < m; i++) {
 			int from, to, cost;
 			cin >> from >> to >> cost;
-			adj[from-1][to-1] = min(adj[from-1][to-1], cost);
-			adj[to-1][from-1] = min(adj[to-1][from-1], cost);
+			adj[from][to] = min(adj[from][to], cost);
+			adj[to][from] = min(adj[to][from], cost);
 		}
 		int people;
 		cin >> people;
@@ -58,7 +58,7 @@ int main() {
 		}
 		
 		floyd();
-		for (int i = 0; i < n; i++) {
+		for (int i = 1; i <= n; i++) {
 			if (check[i] == true) {
 				for (int j = 1; j<= n; j++) {
 					maxDist[j] = max(maxDist[j], adj[i][j]);
@@ -67,12 +67,12 @@ int main() {
 		}
 		int answer;
 		int dist = INF;
-		for (int i = 0; i < n; i++) {
+		for (int i = 1; i <= n; i++) {
 			if (dist > maxDist[i]) {
 				dist = maxDist[i];
 				answer = i;
 			}
 		}
-		cout << answer + 1 << '\n';
+		cout << answer << '\n';
 	}
 }

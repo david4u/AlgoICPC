@@ -7,6 +7,13 @@ using namespace std;
 int n;
 vector<pair<int, int>> xy;
 
+bool cmp(pair<int, int> p1, pair<int, int> p2) {
+	if (p1.second == p2.second) {
+		return p1.first < p2.first;
+	}
+	return p1.second < p2.second;
+}
+
 int min(int x, int y) {
 	return x < y ? x : y;
 }
@@ -52,6 +59,7 @@ pair<pair<int, int> , pair<int, int>> closestPair(vector<pair<int, int>> src) {
 			S.push_back(src[i]);
 		}
 	}
+	sort(S.begin(), S.end(), cmp);
 	if (S.size() <= 1) {
 		if (distance(closeL.first, closeL.second) > distance(closeR.first, closeR.second)) {
 			return closeR;
@@ -62,7 +70,7 @@ pair<pair<int, int> , pair<int, int>> closestPair(vector<pair<int, int>> src) {
 	}
 	tmp = {S[0], S[1]};
 	for (int i = 0; i < S.size(); i++) {
-		for (int j = i+1; j < i + 7 && j < S.size(); j++) {
+		for (int j = i+1; j < i + 11 && j < S.size(); j++) {
 			if (distance(tmp.first, tmp.second) > distance(S[i], S[j])) {
 				tmp = {S[i], S[j]};
 			}

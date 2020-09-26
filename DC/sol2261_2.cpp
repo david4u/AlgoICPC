@@ -113,7 +113,7 @@ Ppair ClosestPair(vector<Point> P) {
 	// x* +- delta 안에 있는 점들의 집합은 M이다.
 	vector<Point> M;
 	for (int i = 0; i < P.size(); i++) {
-		if (xStar - delta <= P[i].x && P[i].x <= xStar + delta) {
+		if ((xStar - P[i].x) * (xStar - P[i].x) < delta) {
 			M.push_back(P[i]);
 		}
 	}
@@ -159,9 +159,11 @@ Ppair ClosestPair(vector<Point> P) {
 
 int main() {
 	cin >> n;
-	vector<Point> xy(n);
+	vector<Point> xy;
 	for (int i = 0; i < n; i++) {
-		cin >> xy[i].x >> xy[i].y;
+		Point p;
+		cin >> p.x >> p.y;
+		xy.push_back(p);
 	}
 	sort(xy.begin(), xy.end());
 	Ppair answer = ClosestPair(xy);
